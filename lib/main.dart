@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,6 +29,34 @@ class _HomePageState extends State<HomePage> {
   String formvalue = '';
   List<String> myList = List<String>();
   final _formkey = GlobalKey<FormFieldState>();
+
+  Future<List> getStringList() async {
+    final prefs = await SharedPreferences.getInstance();
+    List newlist = prefs.getStringList("my_string_list_key");
+    if (newlist == null) {
+      return [];
+    }
+    return newlist;
+  }
+
+  Future<Void> updatedList(List<String> updatedList) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setStringList("my_string_list_key", updatedList);
+  }
+
+  Future<Void> startup() async {
+    List oldlist = await getStringList();
+    setState(() {
+      myList = oldlist;
+    });
+  }
+
+  @override
+  initState() {
+    super.initState();
+    startup();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +102,7 @@ class _HomePageState extends State<HomePage> {
                 if (formvalue != '') {
                   //if it is not empty string then
                   myList.add(formvalue);
+                  updatedList(myList);
                   formvalue = '';
                   _formkey.currentState.reset();
                   setState(() {});
@@ -88,6 +120,7 @@ class _HomePageState extends State<HomePage> {
                   key: Key(myList[index]),
                   onDismissed: (dir) {
                     myList.removeAt(index);
+                    updatedList(myList);
                   },
                   child: ListTile(
                     title: Text(myList[index]),
