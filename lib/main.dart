@@ -56,6 +56,17 @@ class _HomePageState extends State<HomePage> {
                   )),
             ),
           ),
+          Container(
+            padding: EdgeInsets.only(
+              left: 30,
+              right: 30,
+              top: 5,
+            ),
+            child: RaisedButton(
+              onPressed: () {},
+              child: Text("Create a toDO"),
+            ),
+          ),
         ],
       ),
     );
