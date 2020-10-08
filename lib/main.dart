@@ -24,6 +24,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String formvalue = '';
+  List<String> myList = List<String>();
+  final _formkey = GlobalKey<FormFieldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +48,7 @@ class _HomePageState extends State<HomePage> {
               horizontal: 20,
             ),
             child: TextFormField(
+              key: _formkey,
               onChanged: (val) {
                 formvalue = val;
               },
@@ -63,8 +66,34 @@ class _HomePageState extends State<HomePage> {
               top: 5,
             ),
             child: RaisedButton(
-              onPressed: () {},
+              onPressed: () {
+                //check if notequal to null
+                if (formvalue != '') {
+                  //if it is not empty string then
+                  myList.add(formvalue);
+                  formvalue = '';
+                  _formkey.currentState.reset();
+                  setState(() {});
+                }
+              },
               child: Text("Create a toDO"),
+            ),
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height,
+            child: ListView.builder(
+              itemCount: myList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Dismissible(
+                  key: Key(myList[index]),
+                  onDismissed: (dir) {
+                    myList.removeAt(index);
+                  },
+                  child: ListTile(
+                    title: Text(myList[index]),
+                  ),
+                );
+              },
             ),
           ),
         ],
