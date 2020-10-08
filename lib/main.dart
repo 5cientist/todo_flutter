@@ -9,7 +9,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp();
+    return MaterialApp(
+      home: HomePage(),
+    );
   }
 }
 
@@ -21,8 +23,41 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String formvalue = '';
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              top: 10,
+            ),
+            child: Text(
+              "My ToDo",
+              style: TextStyle(
+                fontSize: 54,
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
+            child: TextFormField(
+              onChanged: (val) {
+                formvalue = val;
+              },
+              decoration: InputDecoration(
+                  hintText: "write your TODO",
+                  hintStyle: TextStyle(
+                    fontSize: 25,
+                  )),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
